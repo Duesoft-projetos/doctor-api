@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { MedicalInsuranceService } from './medical-insurance.service';
 import { Request } from 'express';
 import { CreateMedicalInsuranceDto } from './dtos/create-medical-insurance.dto';
@@ -10,5 +10,10 @@ export class MedicalInsuranceController {
     @Post()
     async create(@Req() req: Request, @Body() data: CreateMedicalInsuranceDto) {
         return this.service.create(data, req.user);
+    }
+
+    @Get()
+    async listAll() {
+        return this.service.list();
     }
 }

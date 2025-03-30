@@ -23,4 +23,11 @@ export class MedicalInsuranceService {
 
         return register;
     }
+
+    async list(): Promise<MedicalInsurance[]> {
+        return this.repository.find({
+            where: { isActive: true },
+            order: { name: 1 }
+        })
+    }
 }

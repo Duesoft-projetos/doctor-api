@@ -23,7 +23,7 @@ export class Appointment extends BaseEntity {
     medicalInsuranceId: number;
 
     @Expose({ name: 'medical_insurance' })
-    @OneToOne(() => MedicalInsurance)
+    @ManyToOne(() => MedicalInsurance)
     @JoinColumn({ name: 'medical_insurance_id' })
     medicalInsurance: MedicalInsurance;
 
