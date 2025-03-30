@@ -1,0 +1,2 @@
+- Para iniciar com uma determinada variável de ambiente
+nest start --env-file .env
