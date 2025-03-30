@@ -18,13 +18,15 @@ export class CreateCostumerDto {
 
     @IsString()
     @IsNotEmpty()
+    @Transform(({ value }: { value: string }) => value.replace(/\D/g, ''))
     phone: string;
 
     @IsDateString()
     birthday: string;
 
     @IsEnum(CostumerGender)
-    gender: CostumerGender;
+    @IsOptional()
+    gender?: CostumerGender;
 
     @IsEmail()
     @IsOptional()

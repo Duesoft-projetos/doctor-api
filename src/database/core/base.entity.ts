@@ -14,11 +14,11 @@ export class BaseEntity {
     @PrimaryGeneratedColumn('rowid')
     id: number;
 
-    @Expose({ name: 'created_at' })
+    @Exclude()
     @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
     readonly createdAt: Date;
 
-    @Expose({ name: 'updated_at' })
+    @Exclude()
     @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' })
     readonly updatedAt: Date;
 
@@ -26,11 +26,11 @@ export class BaseEntity {
     @DeleteDateColumn({ name: 'deleted_at', type: 'timestamptz' })
     deletedAt!: Date;
 
-    @Expose({ name: 'is_active' })
+    @Exclude()
     @Column({ name: 'is_active', default: true })
     isActive: boolean;
 
-    @Expose({ name: 'user_id' })
+    @Exclude()
     @Column({ name: 'user_id', nullable: true })
     userId?: number;
 

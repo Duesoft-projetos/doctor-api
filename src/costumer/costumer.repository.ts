@@ -11,7 +11,7 @@ export class CostumerRepository extends Repository<Costumer> {
 
     async findUnique(name: string, birthday: string) {
         return await this.createQueryBuilder('costumer')
-            .where("unaccent(costumer.name) ILIKE unaccent(:name) AND costumer.birthday = :birthday", { name: `%${name}%`, birthday })
+            .where('unaccent(costumer.name) ILIKE unaccent(:name) AND costumer.birthday = :birthday', { name: `%${name}%`, birthday })
             .getOne()
     }
 }

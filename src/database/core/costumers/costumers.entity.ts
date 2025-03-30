@@ -30,8 +30,8 @@ export class Costumer extends BaseEntity {
     @Column({ type: 'date' })
     birthday: string;
 
-    @Column({ enum: CostumerGender })
-    gender: CostumerGender;
+    @Column({ enum: CostumerGender, nullable: true })
+    gender?: CostumerGender;
 
     @Column({ nullable: true })
     email?: string;
@@ -46,7 +46,7 @@ export class Costumer extends BaseEntity {
     @Column({ name: 'medical_insurance_id' })
     medicalInsuranceId: number;
 
-    @OneToOne(() => MedicalInsurance, { onDelete: 'CASCADE' })
+    @OneToOne(() => MedicalInsurance)
     @JoinColumn({ name: 'medical_insurance_id' })
     medicalInsurance: MedicalInsurance;
 }
