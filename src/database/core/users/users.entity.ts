@@ -16,10 +16,6 @@ export class User extends BaseEntity {
     @Column()
     password: string;
 
-    @Expose({ name: 'is_active' })
-    @Column({ name: 'is_active', default: true })
-    isActive: boolean;
-
     @Column({ nullable: true })
     photo?: string;
 

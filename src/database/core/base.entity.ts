@@ -26,6 +26,10 @@ export class BaseEntity {
     @DeleteDateColumn({ name: 'deleted_at', type: 'timestamptz' })
     deletedAt!: Date;
 
+    @Expose({ name: 'is_active' })
+    @Column({ name: 'is_active', default: true })
+    isActive: boolean;
+
     @Expose({ name: 'user_id' })
     @Column({ name: 'user_id', nullable: true })
     userId?: number;

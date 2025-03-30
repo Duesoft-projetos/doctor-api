@@ -17,9 +17,6 @@ export class UsersService {
     validDevice(deviceId: string): boolean {
         const deviceAuthorized = this.configService.get<string>('APP_DEVICE_ID');
 
-        console.log('deviceId', deviceId)
-        console.log('deviceAuthorized', deviceAuthorized)
-
         return !!deviceId && !!deviceAuthorized && deviceAuthorized == deviceId;
     }
 
