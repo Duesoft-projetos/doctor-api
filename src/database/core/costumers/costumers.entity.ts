@@ -39,6 +39,9 @@ export class Costumer extends BaseEntity {
     @Column({ nullable: true })
     observation?: string;
 
+    @Column({ nullable: true })
+    photo?: string;
+
     @Expose({ name: 'medical_insurance_id' })
     @Column({ name: 'medical_insurance_id' })
     medicalInsuranceId: number;

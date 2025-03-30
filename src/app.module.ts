@@ -9,6 +9,7 @@ import { CostumerModule } from './costumer/costumer.module';
 import { MedicalInsuranceModule } from './medical-insurance/medical-insurance.module';
 import { AuthGuard } from './guards/auth.guard';
 import { UserRolesGuard } from './guards/user-roles.guard';
+import { ProfessionalModule } from './professional/professional.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { UserRolesGuard } from './guards/user-roles.guard';
     UsersModule,
     CostumerModule,
     MedicalInsuranceModule,
+    ProfessionalModule,
   ],
   providers: [
     { provide: 'APP_GUARD', useClass: AuthGuard },

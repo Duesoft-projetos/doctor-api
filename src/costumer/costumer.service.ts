@@ -23,4 +23,8 @@ export class CostumerService {
 
         return register;
     }
+
+    async list(): Promise<Costumer[]> {
+        return await this.repository.findBy({ isActive: true });
+    }
 }
