@@ -26,6 +26,18 @@ export class AppointmentsService {
         const { costumerName, professionalId } = data;
 
         const registers = await this.repository.search(costumerName, professionalId);
-        return registers;
+        return registers.reduce((acc, { professional, professionalId: key, ...item }) => {
+            if (!acc[key]) {
+                acc[key] = {
+                    id: key,
+                    name: professional.name,
+                    appointments: []
+                }
+            }
+
+            acc[key].appointments.push(item);
+
+            return acc;
+        }, {});
     }
 }
