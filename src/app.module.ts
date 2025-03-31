@@ -11,7 +11,7 @@ import { UserRolesGuard } from './guards/user-roles.guard';
 import { JwtModuleInternal } from './jwt/jwt.module';
 import { MedicalInsuranceModule } from './medical-insurance/medical-insurance.module';
 import { ProfessionalModule } from './professional/professional.module';
-import { ScheduleModule } from './schedule/schedule.module';
+import { ServicesModule } from './services/services.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -28,8 +28,8 @@ import { UsersModule } from './users/users.module';
     CostumerModule,
     MedicalInsuranceModule,
     ProfessionalModule,
-    ScheduleModule,
     AppointmentsModule,
+    ServicesModule,
   ],
   providers: [
     { provide: 'APP_GUARD', useClass: AuthGuard },
