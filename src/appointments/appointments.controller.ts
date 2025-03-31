@@ -4,6 +4,7 @@ import { Request } from 'express';
 import { CreateAppointmentDto } from './dtos/create-appointment.dto';
 import { ListAppointmentDto } from './dtos/list-appointment-today.dto';
 import { format } from 'date-fns';
+import { CancelAppointmentDto } from './dtos/cancel-appointment.dto';
 
 @Controller('appointments')
 export class AppointmentsController {
@@ -29,5 +30,10 @@ export class AppointmentsController {
     @Get(':id/details')
     async findById(@Param('id', ParseIntPipe) id: number) {
         return await this.service.findById(id);
+    }
+
+    @Post(':id/cancel')
+    async cancelById(@Param('id', ParseIntPipe) id: number, @Body() data: CancelAppointmentDto) {
+        return await this.service.cancelById({ ...data, id });
     }
 }

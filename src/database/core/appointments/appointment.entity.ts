@@ -2,7 +2,7 @@ import { BaseEntity } from "@entities/base.entity";
 import { MedicalInsurance } from "@entities/medical-insurance/medical-insurance.entity";
 import { Professional } from "@entities/professional/professional.entity";
 import { Expose } from "class-transformer";
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 
 export enum AppointmentStatus {
     scheduled = 'SCHEDULED',
@@ -56,4 +56,8 @@ export class Appointment extends BaseEntity {
 
     @Column({ nullable: true })
     observation?: string;
+
+    @Expose({ name: 'reason_cancellation' })
+    @Column({ name: 'reason_cancellation', nullable: true })
+    reasonCancellation?: string;
 }

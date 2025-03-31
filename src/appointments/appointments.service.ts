@@ -2,9 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { AppointmentRepository } from './appointments.repository';
 import { CreateAppointmentDto } from './dtos/create-appointment.dto';
 import { User } from '@entities/users/users.entity';
-import { Appointment } from '@entities/appointments/appointment.entity';
+import { Appointment, AppointmentStatus } from '@entities/appointments/appointment.entity';
 import { ListAppointmentDto } from './dtos/list-appointment-today.dto';
 import { addMinutes } from 'date-fns';
+import { CancelAppointmentDto } from './dtos/cancel-appointment.dto';
 
 @Injectable()
 export class AppointmentsService {
@@ -51,5 +52,24 @@ export class AppointmentsService {
         }
 
         return register;
+    }
+
+    async cancelById(data: CancelAppointmentDto): Promise<void> {
+        const { id, reasonCancellation } = data;
+
+        const register = await this.repository.findOneBy({ id });
+
+        if (!register) {
+            throw new NotFoundException(`Registro ${id} não encontrado`);
+        }
+
+        if (register.status === AppointmentStatus.canceled) {
+            throw new NotFoundException(`Agendamento ${id} já cancelado`);
+        }
+
+        register.status = AppointmentStatus.canceled;
+        register.reasonCancellation = reasonCancellation;
+
+        await this.repository.save(register);
     }
 }
