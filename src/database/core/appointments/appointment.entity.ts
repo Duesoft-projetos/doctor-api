@@ -7,16 +7,15 @@ import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { AppointmentReasonCancellation } from './appointments.reason.cancellation.entity';
 
 export enum AppointmentStatus {
-  scheduled = 'SCHEDULED',
+  active = 'ACTIVE',
   waiting = 'WAITING',
-  started = 'STARTED',
   canceled = 'CANCELED',
   invalid = 'INVALID',
 }
 
 @Entity({ name: 'appointments' })
 export class Appointment extends BaseEntity {
-  @Column({ enum: AppointmentStatus, default: AppointmentStatus.scheduled })
+  @Column({ enum: AppointmentStatus, default: AppointmentStatus.active })
   status: AppointmentStatus;
 
   @Expose({ name: 'costumer_name' })

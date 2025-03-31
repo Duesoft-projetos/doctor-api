@@ -16,7 +16,7 @@ export class ServiceRepository extends Repository<Service> {
     const wheres: Array<string> = [];
 
     if (status?.length) {
-      wheres.push(`service.status IN ('${status.join('\', \'')}')`);
+      wheres.push(`service.status IN ('${status.join("', '")}')`);
     }
 
     if (costumerId) {

@@ -1,43 +1,53 @@
-import { CostumerDocumentType, CostumerGender } from "@entities/costumers/costumers.entity";
-import { Expose, Transform } from "class-transformer";
-import { IsDateString, IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from "class-validator";
+import { CostumerDocumentType, CostumerGender } from '@entities/costumers/costumers.entity';
+import { Expose, Transform } from 'class-transformer';
+import {
+  IsDateString,
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 
 export class CreateCostumerDto {
-    @Transform(({ value }: { value: string }) => value.replace(/\D/g, ''))
-    @IsString()
-    @IsOptional()
-    document?: string;
+  @Transform(({ value }: { value: string }) => value.replace(/\D/g, ''))
+  @IsString()
+  @IsOptional()
+  document?: string;
 
-    @IsEnum(CostumerDocumentType)
-    @IsOptional()
-    documentType?: CostumerDocumentType;
+  @IsEnum(CostumerDocumentType)
+  @IsOptional()
+  documentType?: CostumerDocumentType;
 
-    @IsString()
-    @IsNotEmpty()
-    name: string;
+  @IsString()
+  @IsNotEmpty()
+  name: string;
 
-    @IsString()
-    @IsNotEmpty()
-    @Transform(({ value }: { value: string }) => value.replace(/\D/g, ''))
-    phone: string;
+  @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }: { value: string }) => value.replace(/\D/g, ''))
+  phone: string;
 
-    @IsDateString()
-    birthday: string;
+  @IsDateString()
+  birthday: string;
 
-    @IsEnum(CostumerGender)
-    @IsOptional()
-    gender?: CostumerGender;
+  @IsEnum(CostumerGender)
+  @IsOptional()
+  gender?: CostumerGender;
 
-    @IsEmail()
-    @IsOptional()
-    email?: string;
+  @Transform(({ value }: { value: string }) => (!value ? null : value))
+  @IsEmail()
+  @IsOptional()
+  email?: string;
 
-    @IsString()
-    @MaxLength(500)
-    @IsOptional()
-    observation?: string;
+  @IsString()
+  @MaxLength(500)
+  @IsOptional()
+  observation?: string;
 
-    @IsNumber()
-    @Expose({ name: 'medical_insurance_id' })
-    medicalInsuranceId: number;
+  @IsNumber()
+  @Expose({ name: 'medical_insurance_id' })
+  medicalInsuranceId: number;
 }

@@ -115,7 +115,7 @@ export class AppointmentsService {
       throw new NotFoundException(`Registro ${id} não encontrado`);
     }
 
-    if (register.status !== AppointmentStatus.scheduled) {
+    if (register.status !== AppointmentStatus.active) {
       throw new NotFoundException(`Registro com status ${register.status} não pode ser reagendado`);
     }
 

@@ -2,6 +2,11 @@ import { Expose, Type } from 'class-transformer';
 import { IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class CreateServiceDto {
+  @Expose({ name: 'appointment_id' })
+  @IsNumber()
+  @IsNotEmpty()
+  appointmentId: number;
+
   @Expose({ name: 'costumer_id' })
   @IsNumber()
   @IsNotEmpty()
