@@ -36,4 +36,4 @@ import { UsersModule } from './users/users.module';
     { provide: 'APP_GUARD', useClass: UserRolesGuard },
   ],
 })
-export class AppModule {}
+export class AppModule { }

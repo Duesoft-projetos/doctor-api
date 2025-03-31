@@ -8,7 +8,7 @@ import { ServiceRepository } from './repositories/services.repository';
 
 @Injectable()
 export class ServicesService {
-  constructor(private readonly repository: ServiceRepository) {}
+  constructor(private readonly repository: ServiceRepository) { }
 
   async create(data: CreateServiceDto, user: User): Promise<Service> {
     const register = this.repository.create(data);
@@ -20,6 +20,7 @@ export class ServicesService {
 
   async list(data: ListServiceDto): Promise<Service[]> {
     const registers = await this.repository.list(data);
+
     return registers;
   }
 }

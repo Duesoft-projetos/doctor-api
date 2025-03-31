@@ -15,8 +15,8 @@ export class ServiceRepository extends Repository<Service> {
     const { status, costumerId, professionalId, scheduleDate } = data;
     const wheres: Array<string> = [];
 
-    if (status) {
-      wheres.push(`service.status = '${status}'`);
+    if (status?.length) {
+      wheres.push(`service.status IN ('${status.join('\', \'')}')`);
     }
 
     if (costumerId) {
@@ -31,6 +31,11 @@ export class ServiceRepository extends Repository<Service> {
       wheres.push(`service.scheduled_start::date = '${scheduleDate}'`);
     }
 
-    return this.createQueryBuilder('service').where(wheres.join(' AND ')).getMany();
+    return this.createQueryBuilder('service')
+      .where(wheres.join(' AND '))
+      .leftJoinAndSelect('service.costumer', 'costumer')
+      .leftJoinAndSelect('service.medicalInsurance', 'medical_insurance')
+      .leftJoinAndSelect('service.professional', 'professional')
+      .getMany();
   }
 }

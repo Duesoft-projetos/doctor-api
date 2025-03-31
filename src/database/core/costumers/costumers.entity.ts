@@ -37,16 +37,16 @@ export class Costumer extends BaseEntity {
     email?: string;
 
     @Column({ nullable: true })
-    observation?: string;
-
-    @Column({ nullable: true })
     photo?: string;
 
+    @Column({ name: 'legal_guardian', nullable: true })
+    legalGuardian?: string;
+
     @Expose({ name: 'medical_insurance_id' })
-    @Column({ name: 'medical_insurance_id' })
-    medicalInsuranceId: number;
+    @Column({ name: 'medical_insurance_id', nullable: true })
+    medicalInsuranceId?: number;
 
     @OneToOne(() => MedicalInsurance)
     @JoinColumn({ name: 'medical_insurance_id' })
-    medicalInsurance: MedicalInsurance;
+    medicalInsurance?: MedicalInsurance;
 }

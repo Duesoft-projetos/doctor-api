@@ -7,7 +7,7 @@ export class CancelAppointmentDto {
   id: number;
 
   @Expose({ name: 'reason_cancellation_id' })
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   reasonCancellationId: number;
 

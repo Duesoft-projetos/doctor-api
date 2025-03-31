@@ -1,11 +1,11 @@
 import { ServiceStatus } from '@entities/services/services.entity';
 import { Expose } from 'class-transformer';
-import { IsDateString, IsEnum, IsNumber, IsOptional } from 'class-validator';
+import { IsArray, IsDateString, IsEnum, IsNumber, IsOptional } from 'class-validator';
 
 export class ListServiceDto {
-  @IsEnum(ServiceStatus)
+  @IsArray()
   @IsOptional()
-  status?: ServiceStatus;
+  status?: ServiceStatus[];
 
   @Expose({ name: 'costumer_id' })
   @IsNumber()

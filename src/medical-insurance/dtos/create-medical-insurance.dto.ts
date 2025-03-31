@@ -1,5 +1,5 @@
 import { Transform } from "class-transformer";
-import { IsNotEmpty, IsString, Matches } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsOptional, IsString, Matches } from "class-validator";
 
 export class CreateMedicalInsuranceDto {
     @IsString()
@@ -13,4 +13,8 @@ export class CreateMedicalInsuranceDto {
     @IsString()
     @IsNotEmpty()
     name: string;
+
+    @IsBoolean()
+    @IsOptional()
+    generateCharge?: boolean;
 }
