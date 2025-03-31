@@ -18,7 +18,7 @@ import { UsersModule } from './users/users.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.development.due.env'],
+      envFilePath: ['.env.development'],
       load: [settings],
     }),
     DatabaseModule,
