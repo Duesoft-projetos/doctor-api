@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Query, Req } from '@nestjs/common';
 import { AppointmentsService } from './appointments.service';
 import { Request } from 'express';
 import { CreateAppointmentDto } from './dtos/create-appointment.dto';
-import { ListAppointmentTodayDto } from './dtos/list-appointment-today.dto';
+import { ListAppointmentDto } from './dtos/list-appointment-today.dto';
+import { format } from 'date-fns';
 
 @Controller('appointments')
 export class AppointmentsController {
@@ -13,8 +14,20 @@ export class AppointmentsController {
         return await this.service.create(data, req.user);
     }
 
+    @Get('today')
+    async listToday(@Query() filter: ListAppointmentDto) {
+        filter.scheduleDate = format(new Date(), "yyyy-MM-dd");
+
+        return await this.service.list(filter);
+    }
+
     @Get()
-    async listToday(@Query() filter: ListAppointmentTodayDto) {
-        return await this.service.listToday(filter);
+    async list(@Query() filter: ListAppointmentDto) {
+        return await this.service.list(filter);
+    }
+
+    @Get(':id/details')
+    async findById(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.findById(id);
     }
 }

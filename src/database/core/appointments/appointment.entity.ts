@@ -4,8 +4,19 @@ import { Professional } from "@entities/professional/professional.entity";
 import { Expose } from "class-transformer";
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
 
+export enum AppointmentStatus {
+    scheduled = 'SCHEDULED',
+    waiting = 'WAITING',
+    started = 'STARTED',
+    canceled = 'CANCELED',
+    invalid = 'INVALID'
+}
+
 @Entity({ name: 'appointments' })
 export class Appointment extends BaseEntity {
+    @Column({ enum: AppointmentStatus, default: AppointmentStatus.scheduled })
+    status: AppointmentStatus;
+
     @Expose({ name: 'costumer_name' })
     @Column({ name: 'costumer_name' })
     costumerName: string;

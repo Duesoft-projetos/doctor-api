@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { AppointmentRepository } from './appointments.repository';
 import { CreateAppointmentDto } from './dtos/create-appointment.dto';
 import { User } from '@entities/users/users.entity';
 import { Appointment } from '@entities/appointments/appointment.entity';
-import { ListAppointmentTodayDto } from './dtos/list-appointment-today.dto';
+import { ListAppointmentDto } from './dtos/list-appointment-today.dto';
 import { addMinutes } from 'date-fns';
 
 @Injectable()
@@ -22,10 +22,9 @@ export class AppointmentsService {
         return register;
     }
 
-    async listToday(data: ListAppointmentTodayDto) {
-        const { costumerName, professionalId } = data;
+    async list(data: ListAppointmentDto) {
+        const registers = await this.repository.search(data);
 
-        const registers = await this.repository.search(costumerName, professionalId);
         return registers.reduce((acc, { professional, professionalId: key, ...item }) => {
             if (!acc[key]) {
                 acc[key] = {
@@ -39,5 +38,18 @@ export class AppointmentsService {
 
             return acc;
         }, {});
+    }
+
+    async findById(id: number): Promise<Appointment> {
+        const register = await this.repository.findOne({
+            where: { id },
+            relations: ['professional']
+        });
+
+        if (!register) {
+            throw new NotFoundException(`Registro ${id} não encontrado`);
+        }
+
+        return register;
     }
 }
