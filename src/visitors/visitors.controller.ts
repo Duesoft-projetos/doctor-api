@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query, Req } from '@nestjs/common';
 import { VisitorsService } from './visitors.service';
 import { CreateTypeVisitorDto } from './dtos/create-type-visitor.dto';
 import { Request } from 'express';
@@ -26,13 +26,18 @@ export class VisitorsController {
     }
 
     @Get()
-    async list(@Param() params: ListVisitorDto) {
-        return await this.service.list(params);
+    async list(@Query() query: ListVisitorDto) {
+        return await this.service.list(query);
     }
 
     @Get('today')
-    async listToday(@Param() params: ListVisitorDto) {
-        params.scheduledDate = format(new Date(), 'yyyy-MM-dd')
-        return await this.service.list(params);
+    async listToday(@Query() query: ListVisitorDto) {
+        query.scheduledDate = format(new Date(), 'yyyy-MM-dd')
+        return await this.service.list(query);
+    }
+
+    @Put(':id/serve')
+    async serveVisitor(@Param('id', ParseIntPipe) id: number) {
+        return await this.service.serve(id);
     }
 }

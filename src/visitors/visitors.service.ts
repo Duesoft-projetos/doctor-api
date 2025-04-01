@@ -1,11 +1,11 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { VisitorRepository } from './repositories/visitors.repository';
 import { CreateTypeVisitorDto } from './dtos/create-type-visitor.dto';
 import { VisitorType } from '@entities/visitors/visitor.subject.entity';
 import { VisitorTypeRepository } from './repositories/visitor.type.repository';
 import { User } from '@entities/users/users.entity';
 import { CreateVisitorDto } from './dtos/create-visitor.dto';
-import { Visitor } from '@entities/visitors/visitors.entity';
+import { Visitor, VisitorStatus } from '@entities/visitors/visitors.entity';
 import { ListVisitorDto } from './dtos/list-visitor.dto';
 
 @Injectable()
@@ -47,5 +47,16 @@ export class VisitorsService {
     async list(data: ListVisitorDto): Promise<Visitor[]> {
         const registers = await this.repository.list(data)
         return registers
+    }
+
+    async serve(id: number): Promise<void> {
+        const register = await this.repository.findOneBy({ id })
+
+        if (!register) {
+            throw new NotFoundException(`Registro ${id} não encontrado`)
+        }
+
+        register.status = VisitorStatus.served
+        await this.repository.save(register)
     }
 }
