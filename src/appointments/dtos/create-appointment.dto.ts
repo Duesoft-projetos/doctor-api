@@ -1,5 +1,5 @@
 import { Expose, Transform, Type } from 'class-transformer';
-import { IsDate, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsDate, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString, Matches } from 'class-validator';
 
 export class CreateAppointmentDto {
   @Expose({ name: 'costumer_name' })
@@ -15,6 +15,7 @@ export class CreateAppointmentDto {
   @Transform(({ value }: { value: string }) => value.replace(/\D/g, ''))
   @IsString()
   @IsNotEmpty()
+  @Matches(/^\d{10,11}$/, { message: "O telefone deve ter 10 ou 11 dígitos numéricos" })
   @Expose({ name: 'costumer_phone' })
   costumerPhone: string;
 

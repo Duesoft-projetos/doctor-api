@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from '@entities/base.entity';
 import { MedicalInsurance } from '@entities/medical-insurance/medical-insurance.entity';
 import { Expose } from 'class-transformer';
@@ -46,7 +46,7 @@ export class Costumer extends BaseEntity {
     @Column({ name: 'medical_insurance_id', nullable: true })
     medicalInsuranceId?: number;
 
-    @OneToOne(() => MedicalInsurance)
+    @ManyToOne(() => MedicalInsurance)
     @JoinColumn({ name: 'medical_insurance_id' })
     medicalInsurance?: MedicalInsurance;
 }

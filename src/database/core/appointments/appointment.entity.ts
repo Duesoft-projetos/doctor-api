@@ -1,7 +1,7 @@
 import { BaseEntity } from '@entities/base.entity';
 import { MedicalInsurance } from '@entities/medical-insurance/medical-insurance.entity';
 import { Professional } from '@entities/professional/professional.entity';
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 import { AppointmentReasonCancellation } from './appointments.reason.cancellation.entity';
@@ -27,6 +27,7 @@ export class Appointment extends BaseEntity {
   costumerBirthday: string;
 
   @Expose({ name: 'costumer_phone' })
+  @Transform(({ value }) => value.replace(/^(\d{2})(\d{4,5})(\d{4})$/, "($1) $2-$3"), { toPlainOnly: true })
   @Column({ name: 'costumer_phone' })
   costumerPhone: string;
 

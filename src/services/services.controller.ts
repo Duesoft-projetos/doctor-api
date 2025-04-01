@@ -7,10 +7,11 @@ import { CreateServiceDto } from './dtos/create-service.dto';
 import { ListServiceDto } from './dtos/list-service.dto';
 import { ReadToServeService } from './dtos/read-to-serve-service.dto';
 import { ServicesService } from './services.service';
+import { ReprioritizeServicesDto } from './dtos/reprioritize-service.dto';
 
 @Controller('services')
 export class ServicesController {
-  constructor(private readonly service: ServicesService) {}
+  constructor(private readonly service: ServicesService) { }
 
   @Post()
   async create(@Req() req: Request, @Body() data: CreateServiceDto) {
@@ -49,5 +50,10 @@ export class ServicesController {
   @Put(':id/ready')
   async readyToServe(@Param('id', ParseIntPipe) id: number, @Body() data: ReadToServeService) {
     return await this.service.readyToServe({ ...data, id });
+  }
+
+  @Put('reprioritize')
+  async reprioritize(@Body() data: ReprioritizeServicesDto) {
+    return await this.service.reprioritize(data);
   }
 }

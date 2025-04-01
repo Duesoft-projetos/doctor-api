@@ -57,4 +57,7 @@ export class Service extends BaseEntity {
   @Expose({ name: 'office_key' })
   @Column({ name: 'office_key', nullable: true })
   officeKey: string;
+
+  @Column({ nullable: true })
+  priority?: number;
 }

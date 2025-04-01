@@ -36,6 +36,7 @@ export class ServiceRepository extends Repository<Service> {
       .leftJoinAndSelect('service.costumer', 'costumer')
       .leftJoinAndSelect('service.medicalInsurance', 'medical_insurance')
       .leftJoinAndSelect('service.professional', 'professional')
+      .orderBy('COALESCE(service.priority, 0), service.scheduled_start')
       .getMany();
   }
 }

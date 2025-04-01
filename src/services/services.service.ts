@@ -7,13 +7,15 @@ import { CreateServiceDto } from './dtos/create-service.dto';
 import { ListServiceDto } from './dtos/list-service.dto';
 import { ReadToServeService } from './dtos/read-to-serve-service.dto';
 import { ServiceRepository } from './repositories/services.repository';
+import { In } from 'typeorm';
+import { ReprioritizeServicesDto } from './dtos/reprioritize-service.dto';
 
 @Injectable()
 export class ServicesService {
   constructor(
     private readonly repository: ServiceRepository,
     private readonly appointmentRepository: AppointmentRepository,
-  ) {}
+  ) { }
 
   async create(data: CreateServiceDto, user: User): Promise<Service> {
     const { appointmentId, ...rest } = data;
@@ -53,5 +55,22 @@ export class ServicesService {
 
     await this.repository.save(register);
     return register;
+  }
+
+  async reprioritize(data: ReprioritizeServicesDto): Promise<void> {
+    const { ids } = data;
+
+    const registers = await this.repository.findBy({ id: In(ids) });
+
+    const promises = ids.map(async (id, index) => {
+      const register = registers.find(item => item.id === id);
+
+      if (register) {
+        register.priority = index + 1;
+        await this.repository.save(register);
+      }
+    })
+
+    await Promise.all(promises);
   }
 }
