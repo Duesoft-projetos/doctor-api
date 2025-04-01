@@ -13,6 +13,7 @@ import { MedicalInsuranceModule } from './medical-insurance/medical-insurance.mo
 import { ProfessionalModule } from './professional/professional.module';
 import { ServicesModule } from './services/services.module';
 import { UsersModule } from './users/users.module';
+import { VisitorsModule } from './visitors/visitors.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { UsersModule } from './users/users.module';
     ProfessionalModule,
     AppointmentsModule,
     ServicesModule,
+    VisitorsModule,
   ],
   providers: [
     { provide: 'APP_GUARD', useClass: AuthGuard },
