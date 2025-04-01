@@ -4,6 +4,11 @@ import { VisitorType } from "./visitor.subject.entity";
 import { Professional } from "@entities/professional/professional.entity";
 import { BaseEntity } from "@entities/base.entity";
 
+export enum VisitorStatus {
+    waiting = 'WAITING',
+    served = 'SERVED'
+}
+
 @Entity({ name: 'visitors' })
 export class Visitor extends BaseEntity {
     @Column()
@@ -24,4 +29,7 @@ export class Visitor extends BaseEntity {
     @ManyToOne(() => Professional)
     @JoinColumn({ name: 'professional_id' })
     professional: Professional;
+
+    @Column({ enum: VisitorStatus, default: VisitorStatus.waiting })
+    status: VisitorStatus;
 }
