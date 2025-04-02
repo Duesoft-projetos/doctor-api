@@ -24,7 +24,7 @@ export class AppointmentRepository extends Repository<Appointment> {
     }
 
     if (scheduleDate) {
-      wheres.push(`appointment.scheduled_start::date = '${scheduleDate}'`);
+      wheres.push(`COALESCE(appointment.scheduled_start, appointment.created_at)::date = '${scheduleDate}'`);
     }
 
     if (status) {

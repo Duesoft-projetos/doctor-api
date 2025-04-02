@@ -49,12 +49,12 @@ export class Appointment extends BaseEntity {
   professional: Professional;
 
   @Expose({ name: 'scheduled_start' })
-  @Column({ name: 'scheduled_start' })
-  scheduledStart: Date;
+  @Column({ name: 'scheduled_start', nullable: true })
+  scheduledStart?: Date;
 
   @Expose({ name: 'scheduled_end' })
-  @Column({ name: 'scheduled_end' })
-  scheduledEnd: Date;
+  @Column({ name: 'scheduled_end', nullable: true })
+  scheduledEnd?: Date;
 
   @Column({ nullable: true })
   observation?: string;

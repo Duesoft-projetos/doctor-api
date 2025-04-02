@@ -1,3 +1,4 @@
+import { OmitType } from '@nestjs/swagger';
 import { Expose, Transform, Type } from 'class-transformer';
 import { IsDate, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString, Matches } from 'class-validator';
 
@@ -35,4 +36,8 @@ export class CreateAppointmentDto {
   @IsString()
   @IsOptional()
   observation?: string;
+}
+
+export class CreateWaitingAppointmentDto extends OmitType(CreateAppointmentDto, ['scheduledTime']) {
+
 }

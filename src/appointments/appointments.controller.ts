@@ -4,14 +4,14 @@ import { Request } from 'express';
 
 import { AppointmentsService } from './appointments.service';
 import { CancelAppointmentDto } from './dtos/cancel-appointment.dto';
-import { CreateAppointmentDto } from './dtos/create-appointment.dto';
+import { CreateAppointmentDto, CreateWaitingAppointmentDto } from './dtos/create-appointment.dto';
 import { CreateReasonCancellationAppointment } from './dtos/create-reason-cancellation-appointment.dto';
 import { ListAppointmentDto } from './dtos/list-appointment-today.dto';
 import { RescheduleAppointmentDto } from './dtos/reschedule-appointment.dto';
 
 @Controller('appointments')
 export class AppointmentsController {
-  constructor(private readonly service: AppointmentsService) {}
+  constructor(private readonly service: AppointmentsService) { }
 
   @Post('reason-cancellation')
   async createReasonCancellation(
@@ -29,6 +29,16 @@ export class AppointmentsController {
   @Post()
   async create(@Req() req: Request, @Body() data: CreateAppointmentDto) {
     return await this.service.create(data, req.user);
+  }
+
+  @Put(':id/activate')
+  async activate(@Param('id', ParseIntPipe) id: number, @Body() data: CreateAppointmentDto) {
+    return await this.service.activate(id, data);
+  }
+
+  @Post('waiting')
+  async createWaiting(@Req() req: Request, @Body() data: CreateWaitingAppointmentDto) {
+    return await this.service.createWaiting(data, req.user);
   }
 
   @Get('today')
