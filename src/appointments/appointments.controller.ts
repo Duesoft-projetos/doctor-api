@@ -58,9 +58,9 @@ export class AppointmentsController {
     return await this.service.findById(id);
   }
 
-  @Post(':id/cancel')
+  @Put(':id/cancel')
   async cancelById(@Param('id', ParseIntPipe) id: number, @Body() data: CancelAppointmentDto) {
-    return await this.service.cancelById({ ...data, id });
+    return await this.service.cancel(id, data);
   }
 
   @Put(':id/reschedule')
@@ -68,6 +68,6 @@ export class AppointmentsController {
     @Param('id', ParseIntPipe) id: number,
     @Body() data: RescheduleAppointmentDto,
   ) {
-    return await this.service.rescheduleById({ ...data, id });
+    return await this.service.reschedule(id, data);
   }
 }

@@ -117,8 +117,8 @@ export class AppointmentsService {
     return register;
   }
 
-  async cancelById(data: CancelAppointmentDto): Promise<void> {
-    const { id, reasonCancellationId, descriptionCancellation } = data;
+  async cancel(id: number, data: CancelAppointmentDto): Promise<void> {
+    const { reasonCancellationId, descriptionCancellation } = data;
 
     const register = await this.repository.findOneBy({ id });
 
@@ -137,8 +137,8 @@ export class AppointmentsService {
     await this.repository.save(register);
   }
 
-  async rescheduleById(data: RescheduleAppointmentDto): Promise<void> {
-    const { id, professionalId, scheduledDate } = data;
+  async reschedule(id: number, data: RescheduleAppointmentDto): Promise<void> {
+    const { professionalId, scheduledTime } = data;
 
     const register = await this.repository.findOneBy({ id });
 
@@ -151,8 +151,8 @@ export class AppointmentsService {
     }
 
     register.professionalId = professionalId;
-    register.scheduledStart = scheduledDate;
-    register.scheduledEnd = addMinutes(scheduledDate, 30);
+    register.scheduledStart = scheduledTime;
+    register.scheduledEnd = addMinutes(scheduledTime, 30);
 
     await this.repository.save(register);
   }
