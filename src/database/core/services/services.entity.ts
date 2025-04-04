@@ -60,4 +60,8 @@ export class Service extends BaseEntity {
 
   @Column({ nullable: true })
   priority?: number;
+
+  @Expose({ name: 'started_in' })
+  @Column({ name: 'started_in', nullable: true })
+  startedIn?: Date;
 }

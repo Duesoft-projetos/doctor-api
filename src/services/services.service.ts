@@ -9,6 +9,7 @@ import { ReadToServeService } from './dtos/read-to-serve-service.dto';
 import { ServiceRepository } from './repositories/services.repository';
 import { In } from 'typeorm';
 import { ReprioritizeServicesDto } from './dtos/reprioritize-service.dto';
+import { Serving } from './dtos/serving.dto';
 
 @Injectable()
 export class ServicesService {
@@ -52,6 +53,28 @@ export class ServicesService {
 
     register.status = ServiceStatus.read;
     register.officeKey = register.professionalId.toString().padStart(2, '0');
+
+    await this.repository.save(register);
+    return register;
+  }
+
+  async serving(data: Serving): Promise<Service> {
+    const { id } = data;
+
+    const register = await this.repository.findOneBy({ id });
+
+    if (!register) {
+      throw new NotFoundException(`Registro ID ${id} não encontrado`);
+    }
+
+    if (![ServiceStatus.waiting, ServiceStatus.read].includes(register.status)) {
+      throw new BadRequestException(
+        `Registro com status ${register.status} não pode ser atualizado`
+      );
+    }
+
+    register.startedIn = new Date();
+    register.status = ServiceStatus.started;
 
     await this.repository.save(register);
     return register;
