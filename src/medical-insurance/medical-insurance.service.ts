@@ -1,8 +1,8 @@
 import { ConflictException, Injectable } from '@nestjs/common';
-import { MedicalInsuranceRepository } from './medical-insurance.repostiory';
 import { CreateMedicalInsuranceDto } from './dtos/create-medical-insurance.dto';
 import { User } from '@entities/users/users.entity';
 import { MedicalInsurance } from '@entities/medical-insurance/medical-insurance.entity';
+import { MedicalInsuranceRepository } from './repositories/medical-insurance.repostiory';
 
 @Injectable()
 export class MedicalInsuranceService {

@@ -4,7 +4,7 @@ import { MedicalInsuranceService } from './medical-insurance.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MedicalInsurance } from '@entities/medical-insurance/medical-insurance.entity';
 import { ConfigModule } from '@nestjs/config';
-import { MedicalInsuranceRepository } from './medical-insurance.repostiory';
+import { MedicalInsuranceRepository } from './repositories/medical-insurance.repostiory';
 
 @Module({
   imports: [ConfigModule, TypeOrmModule.forFeature([MedicalInsurance])],

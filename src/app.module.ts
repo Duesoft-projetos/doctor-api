@@ -14,6 +14,7 @@ import { ProfessionalModule } from './professional/professional.module';
 import { ServicesModule } from './services/services.module';
 import { UsersModule } from './users/users.module';
 import { VisitorsModule } from './visitors/visitors.module';
+import { PaymentMethodModule } from './payment-method/payment-method.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { VisitorsModule } from './visitors/visitors.module';
     AppointmentsModule,
     ServicesModule,
     VisitorsModule,
+    PaymentMethodModule,
   ],
   providers: [
     { provide: 'APP_GUARD', useClass: AuthGuard },
