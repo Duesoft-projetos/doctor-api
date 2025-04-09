@@ -12,5 +12,6 @@ import { AppointmentRepository } from './repositories/appointments.repository';
   imports: [ConfigModule, TypeOrmModule.forFeature([Appointment])],
   controllers: [AppointmentsController],
   providers: [AppointmentRepository, AppointmentReasonCancellationRepository, AppointmentsService],
+  exports: [AppointmentRepository]
 })
-export class AppointmentsModule {}
+export class AppointmentsModule { }

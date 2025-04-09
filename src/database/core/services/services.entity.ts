@@ -64,4 +64,8 @@ export class Service extends BaseEntity {
   @Expose({ name: 'started_in' })
   @Column({ name: 'started_in', nullable: true })
   startedIn?: Date;
+
+  @Expose({ name: 'finished_in' })
+  @Column({ name: 'finished_in', nullable: true })
+  finishedIn?: Date;
 }

@@ -15,6 +15,7 @@ import { ServicesModule } from './services/services.module';
 import { UsersModule } from './users/users.module';
 import { VisitorsModule } from './visitors/visitors.module';
 import { PaymentMethodModule } from './payment-method/payment-method.module';
+import { ServicesPaymentModule } from './services-payment/services-payment.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { PaymentMethodModule } from './payment-method/payment-method.module';
     ServicesModule,
     VisitorsModule,
     PaymentMethodModule,
+    ServicesPaymentModule,
   ],
   providers: [
     { provide: 'APP_GUARD', useClass: AuthGuard },

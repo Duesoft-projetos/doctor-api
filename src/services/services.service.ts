@@ -9,7 +9,8 @@ import { ReadToServeService } from './dtos/read-to-serve-service.dto';
 import { ServiceRepository } from './repositories/services.repository';
 import { In } from 'typeorm';
 import { ReprioritizeServicesDto } from './dtos/reprioritize-service.dto';
-import { Serving } from './dtos/serving.dto';
+import { ServingDto } from './dtos/serving.dto';
+import { FinishServiceDto } from './dtos/finish-service.dto';
 
 @Injectable()
 export class ServicesService {
@@ -36,8 +37,8 @@ export class ServicesService {
     return registers;
   }
 
-  async readyToServe(data: ReadToServeService): Promise<Service> {
-    const { id } = data;
+  async readyToServe(id: number, data: ReadToServeService): Promise<Service> {
+    const { office } = data;
 
     const register = await this.repository.findOneBy({ id });
 
@@ -52,13 +53,13 @@ export class ServicesService {
     }
 
     register.status = ServiceStatus.read;
-    register.officeKey = register.professionalId.toString().padStart(2, '0');
+    register.officeKey = office.padStart(2, '0');
 
     await this.repository.save(register);
     return register;
   }
 
-  async serving(data: Serving): Promise<Service> {
+  async serving(data: ServingDto): Promise<Service> {
     const { id } = data;
 
     const register = await this.repository.findOneBy({ id });
@@ -80,6 +81,28 @@ export class ServicesService {
     return register;
   }
 
+  async finish(data: FinishServiceDto): Promise<Service> {
+    const { id } = data;
+
+    const register = await this.repository.findOneBy({ id });
+
+    if (!register) {
+      throw new NotFoundException(`Registro ID ${id} não encontrado`);
+    }
+
+    if (register.status !== ServiceStatus.started) {
+      throw new BadRequestException(
+        `Registro com status ${register.status} não pode ser finalizado`
+      );
+    }
+
+    register.finishedIn = new Date();
+    register.status = ServiceStatus.finished;
+
+    await this.repository.save(register);
+    return register;
+  }
+
   async reprioritize(data: ReprioritizeServicesDto): Promise<void> {
     const { ids } = data;
 
@@ -95,5 +118,10 @@ export class ServicesService {
     })
 
     await Promise.all(promises);
+  }
+
+  async findById(id: number): Promise<Service | null> {
+    const register = await this.repository.findOneBy({ id, isActive: true });
+    return register;
   }
 }

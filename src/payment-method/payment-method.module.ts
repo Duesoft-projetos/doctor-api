@@ -5,6 +5,7 @@ import { PaymentMethodRepository } from './repositories/payment-method.repositor
 
 @Module({
   controllers: [PaymentMethodController],
-  providers: [PaymentMethodRepository, PaymentMethodService]
+  providers: [PaymentMethodRepository, PaymentMethodService],
+  exports: [PaymentMethodService]
 })
 export class PaymentMethodModule { }

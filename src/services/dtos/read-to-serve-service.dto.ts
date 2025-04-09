@@ -1,7 +1,9 @@
-import { IsNumber, IsOptional } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class ReadToServeService {
-  @IsNumber()
-  @IsOptional()
-  id: number;
+  @Transform(({ value }) => !isNaN(Number(value)) ? value.toString() : value)
+  @IsString()
+  @IsNotEmpty()
+  office: string;
 }
