@@ -25,6 +25,11 @@ export class ServicesController {
     return await this.service.list(params);
   }
 
+  @Get(':id')
+  async findById(@Param('id', ParseIntPipe) id: number) {
+    return await this.service.findById(id);
+  }
+
   @Get('today/:status')
   async listToday(@Param('status') status: string, @Query() query: ListServiceDto) {
     switch (status) {

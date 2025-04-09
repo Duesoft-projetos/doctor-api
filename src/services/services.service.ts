@@ -96,6 +96,7 @@ export class ServicesService {
       );
     }
 
+    register.total = 90;
     register.finishedIn = new Date();
     register.status = ServiceStatus.finished;
 
@@ -121,7 +122,11 @@ export class ServicesService {
   }
 
   async findById(id: number): Promise<Service | null> {
-    const register = await this.repository.findOneBy({ id, isActive: true });
+    const register = await this.repository.findOne({
+      where: { id, isActive: true },
+      relations: ['costumer', 'professional']
+    });
+
     return register;
   }
 }
