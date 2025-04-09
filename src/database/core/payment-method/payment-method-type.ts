@@ -1,5 +1,5 @@
 export enum PaymentMethodType {
-    full = 'IN-FULL',
-    installment = 'INSTALLMENT',
-    complimentary = 'COMPLIMENTARY'
+  full = 'IN-FULL',
+  installment = 'INSTALLMENT',
+  complimentary = 'COMPLIMENTARY',
 }

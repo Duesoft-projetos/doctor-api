@@ -2,22 +2,22 @@ import { Service, ServiceStatus } from '@entities/services/services.entity';
 import { User } from '@entities/users/users.entity';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { AppointmentRepository } from 'src/appointments/repositories/appointments.repository';
+import { In } from 'typeorm';
 
 import { CreateServiceDto } from './dtos/create-service.dto';
+import { FinishServiceDto } from './dtos/finish-service.dto';
 import { ListServiceDto } from './dtos/list-service.dto';
 import { ReadToServeService } from './dtos/read-to-serve-service.dto';
-import { ServiceRepository } from './repositories/services.repository';
-import { In } from 'typeorm';
 import { ReprioritizeServicesDto } from './dtos/reprioritize-service.dto';
 import { ServingDto } from './dtos/serving.dto';
-import { FinishServiceDto } from './dtos/finish-service.dto';
+import { ServiceRepository } from './repositories/services.repository';
 
 @Injectable()
 export class ServicesService {
   constructor(
     private readonly repository: ServiceRepository,
     private readonly appointmentRepository: AppointmentRepository,
-  ) { }
+  ) {}
 
   async create(data: CreateServiceDto, user: User): Promise<Service> {
     const { appointmentId, ...rest } = data;
@@ -70,7 +70,7 @@ export class ServicesService {
 
     if (![ServiceStatus.waiting, ServiceStatus.read].includes(register.status)) {
       throw new BadRequestException(
-        `Registro com status ${register.status} não pode ser atualizado`
+        `Registro com status ${register.status} não pode ser atualizado`,
       );
     }
 
@@ -92,7 +92,7 @@ export class ServicesService {
 
     if (register.status !== ServiceStatus.started) {
       throw new BadRequestException(
-        `Registro com status ${register.status} não pode ser finalizado`
+        `Registro com status ${register.status} não pode ser finalizado`,
       );
     }
 
@@ -104,19 +104,32 @@ export class ServicesService {
     return register;
   }
 
+  async complete(id: number): Promise<Service> {
+    const register = await this.repository.findOneBy({ id, isActive: true });
+
+    if (!register) {
+      throw new NotFoundException(`Registro ID ${id} não encontrado`);
+    }
+
+    register.status = ServiceStatus.completed;
+
+    await this.repository.save(register);
+    return register;
+  }
+
   async reprioritize(data: ReprioritizeServicesDto): Promise<void> {
     const { ids } = data;
 
     const registers = await this.repository.findBy({ id: In(ids) });
 
     const promises = ids.map(async (id, index) => {
-      const register = registers.find(item => item.id === id);
+      const register = registers.find((item) => item.id === id);
 
       if (register) {
         register.priority = index + 1;
         await this.repository.save(register);
       }
-    })
+    });
 
     await Promise.all(promises);
   }
@@ -124,7 +137,7 @@ export class ServicesService {
   async findById(id: number): Promise<Service | null> {
     const register = await this.repository.findOne({
       where: { id, isActive: true },
-      relations: ['costumer', 'professional']
+      relations: ['costumer', 'professional'],
     });
 
     return register;

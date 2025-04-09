@@ -1,28 +1,29 @@
-import { Expose, Type } from "class-transformer";
-import { ArrayMinSize, IsArray, IsBoolean, IsDecimal, IsNotEmpty, IsNumber, IsOptional } from "class-validator";
+import { Expose, Transform, Type } from 'class-transformer';
+import { ArrayMinSize, IsArray, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
 export class ServicePaymentMethodDto {
-    @IsNumber()
-    @IsNotEmpty()
-    id: number;
+  @IsNumber()
+  @IsNotEmpty()
+  id: number;
 
-    @IsDecimal()
-    @IsNotEmpty()
-    value: number;
+  @IsNumber()
+  @IsNotEmpty()
+  value: number;
 }
 
 export class CreateServicePaymentDto {
-    @IsDecimal()
-    @IsOptional()
-    discount?: number;
+  @Transform(({ value }) => Number.parseFloat(value.toString()))
+  @IsNumber()
+  @IsOptional()
+  discount?: number;
 
-    @Expose({ name: 'service_id' })
-    @IsNumber()
-    @IsNotEmpty()
-    serviceId: number;
+  @Expose({ name: 'service_id' })
+  @IsNumber()
+  @IsNotEmpty()
+  serviceId: number;
 
-    @Type(() => ServicePaymentMethodDto)
-    @IsArray()
-    @ArrayMinSize(1)
-    methods: ServicePaymentMethodDto[];
+  @Type(() => ServicePaymentMethodDto)
+  @IsArray()
+  @ArrayMinSize(1)
+  methods: ServicePaymentMethodDto[];
 }

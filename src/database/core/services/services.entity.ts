@@ -10,6 +10,8 @@ export enum ServiceStatus {
   read = 'READ-TO-SERVE',
   started = 'STARTED',
   finished = 'FINISHED',
+  pendingPayment = 'PENDING-PAYMENT',
+  completed = 'COMPLETED',
   canceled = 'CANCELED',
 }
 
