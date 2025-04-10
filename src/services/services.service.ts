@@ -11,7 +11,6 @@ import { ReadToServeService } from './dtos/read-to-serve-service.dto';
 import { ReprioritizeServicesDto } from './dtos/reprioritize-service.dto';
 import { ServingDto } from './dtos/serving.dto';
 import { ServiceRepository } from './repositories/services.repository';
-import { PaymentMethod } from '@entities/payment-method/payment-method.entity';
 import { PaymentMethodType } from '@entities/payment-method/payment-method-type';
 
 @Injectable()
@@ -35,7 +34,6 @@ export class ServicesService {
 
   async list(data: ListServiceDto): Promise<Service[]> {
     const registers = await this.repository.list(data);
-
     return registers;
   }
 
@@ -157,7 +155,7 @@ export class ServicesService {
   async findById(id: number): Promise<Service | null> {
     const register = await this.repository.findOne({
       where: { id, isActive: true },
-      relations: ['costumer', 'professional'],
+      relations: ['costumer', 'professional', 'medicalInsurance', 'payment'],
     });
 
     return register;

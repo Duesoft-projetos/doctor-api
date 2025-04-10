@@ -2,8 +2,9 @@ import { BaseEntity } from '@entities/base.entity';
 import { Costumer } from '@entities/costumers/costumers.entity';
 import { MedicalInsurance } from '@entities/medical-insurance/medical-insurance.entity';
 import { Professional } from '@entities/professional/professional.entity';
+import { ServicePayment } from '@entities/services-payment/service-payment.entity';
 import { Expose } from 'class-transformer';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToOne } from 'typeorm';
 
 export enum ServiceStatus {
   waiting = 'WAITING',
@@ -74,4 +75,11 @@ export class Service extends BaseEntity {
 
   @Column({ name: 'total', nullable: true })
   total?: number;
+
+  @Column({ name: 'payment_id', nullable: true })
+  paymentId?: number;
+
+  @OneToOne(() => ServicePayment, { cascade: false, onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'payment_id' })
+  payment?: ServicePayment;
 }

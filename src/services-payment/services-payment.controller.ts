@@ -14,11 +14,6 @@ export class ServicesPaymentController {
         return await this.service.create(data, req.user);
     }
 
-    @Get(':id')
-    async findByService(@Param('id', ParseIntPipe) serviceId: number) {
-        return await this.service.findByService(serviceId);
-    }
-
     @Get('today')
     async listToday(@Query() query: FilterServicePaymentDto) {
         query.startDate = query.startDate || format(new Date(), 'yyyy-MM-dd');

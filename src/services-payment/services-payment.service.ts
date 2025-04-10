@@ -25,16 +25,14 @@ export class ServicesPaymentService {
   async create(data: CreateServicePaymentDto, user: User): Promise<ServicePayment> {
     const { serviceId } = data;
 
-    let register = await this.repository.findOneBy({ serviceId });
-
-    if (register) {
-      throw new ConflictException(`Serviço já há registro de pagamento`);
-    }
-
     const serviceRegister = await this.service.findById(serviceId);
 
     if (!serviceRegister) {
       throw new NotFoundException(`Registro de consulta ID ${serviceId} não encontrado`);
+    }
+
+    if (serviceRegister.payment) {
+      throw new NotFoundException(`Pagamento para consulta ID ${serviceId} já registrado`);
     }
 
     const paymentMethods = await this.methodService.list();
@@ -68,7 +66,7 @@ export class ServicesPaymentService {
       );
     }
 
-    register = this.repository.create(data);
+    const register = this.repository.create(data);
 
     register.userId = user.id;
     register.total = serviceRegister.total!;
@@ -88,9 +86,9 @@ export class ServicesPaymentService {
     return register;
   }
 
-  async findByService(id: number): Promise<ServicePayment | null> {
-    const register = await this.repository.findOneBy({ serviceId: id });
-    return register;
+  async findByService(serviceId: number): Promise<ServicePayment | null> {
+    const serviceRegister = await this.service.findById(serviceId);
+    return serviceRegister?.payment ?? null;
   }
 
   async list(data: FilterServicePaymentDto): Promise<ServicePayment[]> {

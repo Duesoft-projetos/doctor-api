@@ -42,13 +42,6 @@ export class ServicePayment extends BaseEntity {
   @JoinColumn({ name: 'costumer_id' })
   costumer: Costumer;
 
-  @Column({ name: 'service_id' })
-  serviceId: number;
-
-  @ManyToOne(() => Service)
-  @JoinColumn({ name: 'service_id' })
-  service: Service;
-
   @Column({ default: false })
   complimentary: boolean;
 

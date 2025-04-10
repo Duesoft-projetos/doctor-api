@@ -42,7 +42,11 @@ export class ServicesController {
         break;
 
       case 'finished':
-        query.status = [ServiceStatus.finished];
+        query.status = [
+          ServiceStatus.finished,
+          ServiceStatus.finishedWithPayment,
+          ServiceStatus.finishedComplimentary
+        ];
         break;
 
       default:
