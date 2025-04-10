@@ -45,7 +45,8 @@ export class ServicesController {
         query.status = [
           ServiceStatus.finished,
           ServiceStatus.finishedWithPayment,
-          ServiceStatus.finishedComplimentary
+          ServiceStatus.finishedComplimentary,
+          ServiceStatus.pendingPayment,
         ];
         break;
 
