@@ -9,9 +9,10 @@ export enum ServiceStatus {
   waiting = 'WAITING',
   read = 'READ-TO-SERVE',
   started = 'STARTED',
-  finished = 'FINISHED',
   pendingPayment = 'PENDING-PAYMENT',
-  completed = 'COMPLETED',
+  finished = 'FINISHED',
+  finishedWithPayment = 'FINISHED-WITH-PAYMENT',
+  finishedComplimentary = 'FINISHED-COMPLIMENTARY',
   canceled = 'CANCELED',
 }
 

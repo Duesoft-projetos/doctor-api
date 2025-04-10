@@ -20,7 +20,7 @@ export class ServicesPaymentService {
     private readonly repository: ServicePaymentRepository,
     private readonly service: ServicesService,
     private readonly methodService: PaymentMethodService,
-  ) {}
+  ) { }
 
   async create(data: CreateServicePaymentDto, user: User): Promise<ServicePayment> {
     const { serviceId } = data;
@@ -78,7 +78,12 @@ export class ServicesPaymentService {
     register.complimentary = invalidMethods.length > 0;
 
     await this.repository.save(register);
-    await this.service.complete(serviceRegister.id);
+    await this.service.complete(
+      serviceRegister.id,
+      register.complimentary ?
+        PaymentMethodType.complimentary :
+        PaymentMethodType.full
+    );
 
     return register;
   }

@@ -11,13 +11,15 @@ import { ReadToServeService } from './dtos/read-to-serve-service.dto';
 import { ReprioritizeServicesDto } from './dtos/reprioritize-service.dto';
 import { ServingDto } from './dtos/serving.dto';
 import { ServiceRepository } from './repositories/services.repository';
+import { PaymentMethod } from '@entities/payment-method/payment-method.entity';
+import { PaymentMethodType } from '@entities/payment-method/payment-method-type';
 
 @Injectable()
 export class ServicesService {
   constructor(
     private readonly repository: ServiceRepository,
     private readonly appointmentRepository: AppointmentRepository,
-  ) {}
+  ) { }
 
   async create(data: CreateServiceDto, user: User): Promise<Service> {
     const { appointmentId, ...rest } = data;
@@ -84,7 +86,10 @@ export class ServicesService {
   async finish(data: FinishServiceDto): Promise<Service> {
     const { id } = data;
 
-    const register = await this.repository.findOneBy({ id });
+    const register = await this.repository.findOne({
+      where: { id, isActive: true },
+      relations: ['medicalInsurance']
+    })
 
     if (!register) {
       throw new NotFoundException(`Registro ID ${id} não encontrado`);
@@ -96,22 +101,37 @@ export class ServicesService {
       );
     }
 
-    register.total = 90;
     register.finishedIn = new Date();
-    register.status = ServiceStatus.finished;
+    register.total = register.medicalInsurance.generateCharge ? 90 : 0;
+    register.status = register.medicalInsurance.generateCharge ?
+      ServiceStatus.pendingPayment :
+      ServiceStatus.finished;
 
     await this.repository.save(register);
     return register;
   }
 
-  async complete(id: number): Promise<Service> {
-    const register = await this.repository.findOneBy({ id, isActive: true });
+  async complete(id: number, methodType: PaymentMethodType): Promise<Service> {
+    const register = await this.repository.findOne({
+      where: { id, isActive: true },
+      relations: ['medicalInsurance']
+    })
 
     if (!register) {
       throw new NotFoundException(`Registro ID ${id} não encontrado`);
     }
 
-    register.status = ServiceStatus.completed;
+    if (register.status === ServiceStatus.finished) {
+      throw new BadRequestException(`Registro ID ${id} já finalizado`)
+    }
+
+    if (register.status !== ServiceStatus.pendingPayment) {
+      throw new BadRequestException(`Registro com status '${register.status}' não pode ser finalizado`)
+    }
+
+    register.status = methodType === PaymentMethodType.complimentary ?
+      ServiceStatus.finishedComplimentary :
+      ServiceStatus.finishedWithPayment
 
     await this.repository.save(register);
     return register;
